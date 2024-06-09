@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "deploy": "npm run build && cd aws && npx cdk deploy",
+    "destroy": "cd aws && npx cdk destroy -f",
     "start": "vite",
     "build": "tsc && vite build",
     "preview": "npm run build && vite preview",
@@ -10,7 +12,8 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint --ignore-path .gitignore --fix src",
-    "prettier": "prettier src --write"
+    "prettier": "prettier src --write",
+    "postinstall": "cd aws && npm ci && cd .. && npm run build"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
