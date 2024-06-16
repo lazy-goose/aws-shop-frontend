@@ -1,5 +1,12 @@
 # React-shop-cloudfront
 
+## AWS Links
+
+- [CloudFront](https://d2tji8imzei20n.cloudfront.net)
+- [S3 Bucket](https://servefrontendstack-sitebucket397a1860-fnqx7y5xkmmb.s3.eu-north-1.amazonaws.com)
+
+## React-shop-cloudfront
+
 This is frontend starter project for nodejs-aws mentoring program. It uses the following technologies:
 
 - [Vite](https://vitejs.dev/) as a project bundler
@@ -16,6 +23,16 @@ This is frontend starter project for nodejs-aws mentoring program. It uses the f
 - [TypeScript](https://www.typescriptlang.org/) as a type checking tool
 
 ## Available Scripts
+
+### `deploy`
+
+Two-step process:
+- Build frontend locally
+- Create and run CDK application on AWS
+
+### `destroy`
+
+Destroy CDK application on AWS
 
 ### `start`
 
