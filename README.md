@@ -2,8 +2,8 @@
 
 ## AWS Links
 
-- [CloudFront](https://d2tji8imzei20n.cloudfront.net)
-- [S3 Bucket](https://servefrontendstack-sitebucket397a1860-fnqx7y5xkmmb.s3.eu-north-1.amazonaws.com)
+- [CloudFront](https://d2qpu76q4eyocg.cloudfront.net)
+- [S3 Bucket](https://servefrontendstack-sitebucket397a1860-awprkebawveq.s3.eu-north-1.amazonaws.com)
 
 ## React-shop-cloudfront
 
