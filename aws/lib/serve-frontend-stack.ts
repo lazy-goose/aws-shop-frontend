@@ -1,4 +1,10 @@
-import { CfnOutput, RemovalPolicy, Stack, StackProps } from "aws-cdk-lib";
+import {
+  CfnOutput,
+  Duration,
+  RemovalPolicy,
+  Stack,
+  StackProps,
+} from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as s3 from "aws-cdk-lib/aws-s3";
@@ -28,6 +34,12 @@ export class ServeFrontendStack extends Stack {
 
     const distribution = new cloudFront.Distribution(this, "SiteDistribution", {
       defaultRootObject: "index.html",
+      errorResponses: [404, 403].map((httpStatus) => ({
+        httpStatus,
+        ttl: Duration.seconds(0),
+        responseHttpStatus: 200,
+        responsePagePath: "/index.html",
+      })),
       defaultBehavior: {
         origin: new cloudFrontOrigins.S3Origin(siteBucket, {
           originAccessIdentity: cloudFrontOAI,
