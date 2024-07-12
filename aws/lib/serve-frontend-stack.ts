@@ -52,6 +52,11 @@ export class ServeFrontendStack extends Stack {
       value: distribution.distributionId,
     });
 
+    new CfnOutput(this, "DistributionOrigin", {
+      value: `https://${distribution.domainName}`,
+      exportName: "DistributionOrigin",
+    });
+
     // siteBucket.grantRead(cloudFrontOAI);
 
     siteBucket.addToResourcePolicy(
@@ -71,10 +76,6 @@ export class ServeFrontendStack extends Stack {
       destinationBucket: siteBucket,
       distribution,
       distributionPaths: ["/*"],
-    });
-
-    new CfnOutput(this, "DistributionDomainName", {
-      value: distribution.domainName,
     });
   }
 }
