@@ -38,13 +38,21 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
     };
 
     console.log("1. Trying to get presigned url from:", url);
+    const headers = new Headers();
+    if (authz) {
+      const token = localStorage.getItem("authorization_token");
+      if (!token) {
+        // prettier-ignore
+        console.error("Unable to get 'authorization_token' from localStorage. Expected string but got:", token);
+        return;
+      }
+      headers.append("Authorization", `Basic ${token}`);
+    }
     const getResponse = await axios.get(url, {
       params: {
         name: encodeURIComponent(file.name),
       },
-      headers: {
-        Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
-      },
+      headers: Object.fromEntries(headers),
     });
     const { isError: isGetError } = logRequest(getResponse);
     if (isGetError) {
@@ -85,6 +93,9 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
         <div>
           <button onClick={() => removeFile()}>Remove file</button>
           <button onClick={() => uploadFile(file)}>Upload file</button>
+          <button onClick={() => uploadFile(file, false)}>
+            Upload file without Authorization header
+          </button>
         </div>
       )}
     </Box>
