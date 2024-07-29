@@ -1,5 +1,5 @@
 import { OrderStatus } from "~/constants/order";
-import { CartItem } from "~/models/CartItem";
+import { CartItem } from "~/models/Cart";
 import { Order } from "~/models/Order";
 import { AvailableProduct, Product } from "~/models/Product";
 
