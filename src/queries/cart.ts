@@ -2,16 +2,27 @@ import axios, { AxiosError } from "axios";
 import React from "react";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import API_PATHS from "~/constants/apiPaths";
-import { CartItem } from "~/models/CartItem";
+import { Cart, CartItem } from "~/models/Cart";
+import { Product } from "~/models/Product";
 
 export function useCart() {
   return useQuery<CartItem[], AxiosError>("cart", async () => {
-    const res = await axios.get<CartItem[]>(`${API_PATHS.cart}/profile/cart`, {
+    const resp = await axios.get<Cart>(`${API_PATHS.cart}/cart`, {
       headers: {
         Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
       },
     });
-    return res.data;
+    if (!resp.data) {
+      throw new Error("Unable to fetch cart");
+    }
+    const items = await Promise.all(
+      resp.data.items.map(async ({ productId, ...rest }) => {
+        // prettier-ignore
+        const res = await axios.get<Product>(`${API_PATHS.product}/products/${productId}`);
+        return { product: res.data, ...rest };
+      })
+    );
+    return items;
   });
 }
 
@@ -29,11 +40,12 @@ export function useInvalidateCart() {
 }
 
 export function useUpsertCart() {
-  return useMutation((values: CartItem) =>
-    axios.put<CartItem[]>(`${API_PATHS.cart}/profile/cart`, values, {
+  return useMutation(({ product, count }: CartItem) => {
+    const updateItems = { items: [{ productId: product.id, count }] };
+    return axios.put<CartItem[]>(`${API_PATHS.cart}/cart`, updateItems, {
       headers: {
         Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
       },
-    })
-  );
+    });
+  });
 }
