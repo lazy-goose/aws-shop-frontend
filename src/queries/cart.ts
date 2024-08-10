@@ -7,7 +7,7 @@ import { Product } from "~/models/Product";
 
 export function useCart() {
   return useQuery<CartItem[], AxiosError>("cart", async () => {
-    const resp = await axios.get<Cart>(`${API_PATHS.cart}/cart`, {
+    const resp = await axios.get<Cart>(`${API_PATHS.bff}/cart`, {
       headers: {
         Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
       },
@@ -18,7 +18,7 @@ export function useCart() {
     const items = await Promise.all(
       resp.data.items.map(async ({ productId, ...rest }) => {
         // prettier-ignore
-        const res = await axios.get<Product>(`${API_PATHS.product}/products/${productId}`);
+        const res = await axios.get<Product>(`${API_PATHS.bff}/product/${productId}`);
         return { product: res.data, ...rest };
       })
     );
@@ -42,7 +42,7 @@ export function useInvalidateCart() {
 export function useUpsertCart() {
   return useMutation(({ product, count }: CartItem) => {
     const updateItems = { items: [{ productId: product.id, count }] };
-    return axios.put<CartItem[]>(`${API_PATHS.cart}/cart`, updateItems, {
+    return axios.put<CartItem[]>(`${API_PATHS.bff}/cart`, updateItems, {
       headers: {
         Authorization: `Basic ${localStorage.getItem("authorization_token")}`,
       },
