@@ -22,7 +22,7 @@ export function useCart() {
         return { product: res.data, ...rest };
       })
     );
-    return items;
+    return items.filter((item) => item.product);
   });
 }
 
